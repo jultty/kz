@@ -2,6 +2,7 @@ package main
 
 import (
   "os"
+  "io"
 	"fmt"
   "strings"
 	"github.com/chanced/caps"
@@ -12,17 +13,12 @@ const DEBUG = false
 func main() {
 
   styles := set_styles()
-  style_args, text := parse_args(styles)
-  convert_case(text, style_args)
+  text, args := parse_options(styles)
+  convert(text, args)
+
 }
 
-func log(message string) {
-  if DEBUG {
-    fmt.Println(message)
-  }
-}
-
-func parse_args(styles map[string]bool) (map[string]bool, string) {
+func parse_options(styles map[string]bool) (string, map[string]bool) {
 
   var text_args []string
   style_args := make(map[string]bool)
@@ -44,11 +40,20 @@ func parse_args(styles map[string]bool) (map[string]bool, string) {
 
   }
 
-  text := strings.Join(text_args, " ")
-  return style_args, text
+  var text string
+
+  stat, _ := os.Stdin.Stat()
+  if (stat.Mode() & os.ModeCharDevice) == 0 {
+    bytes, _ := io.ReadAll(os.Stdin)
+    text = string(bytes)
+  } else {
+    text = strings.Join(text_args, " ")
+  }
+
+  return text, style_args
 }
 
-func convert_case(text string, style_args map[string]bool) {
+func convert(text string, style_args map[string]bool) {
 
   for i, _ := range style_args {
 
@@ -171,9 +176,24 @@ func print_help_text() {
 
       "the -u in this sentece will be interpreted literally"
 
+    If you pass multiple case style arguments, they will all be printed:
+
+      kz "a linha de fronteira se rompeu" -u --title
+      A LINHA DE FRONTEIRA SE ROMPEU
+      A Linha De Fronteira Se Rompeu
+
     You can also pipe text into kz in order to convert it:
 
       echo "a sentence to convert to camelCase" | kz -c
 
+    If you do so, text passed as an argument will be ignored.
+
     `)
 }
+
+func log(message string) {
+  if DEBUG {
+    fmt.Println(message)
+  }
+}
+
