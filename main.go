@@ -32,7 +32,7 @@ func parse_args(styles map[string]bool) (map[string]bool, string) {
     log(fmt.Sprintf("\t[main]\t found argument: %s", arg))
 
     if arg == "--help" || arg == "-h" {
-      fmt.Println("Help text here")
+      print_help_text()
       os.Exit(0)
     }
 
@@ -146,4 +146,34 @@ func is_style_arg(input string, styles map[string]bool) bool {
   }
 
   return styles[candidate]
+}
+
+func print_help_text() {
+  fmt.Println(`
+    Usage: kz [args] [text]
+
+      Arguments:
+
+        --lower,  -l   outputs a lowercase sentence
+        --upper,  -u   OUTPUTS AN UPPERCASE SENTENCE
+        --title,  -t   Outputs A Title Case Sentence
+        --camel,  -c   outputsACamelCaseSentence
+        --pascal, -p   OutputsAPascalCaseSentence
+        --snake,  -s   outputs_a_snake_case_sentence
+        --Snake,  -S   OUTPUTS_AN_UPPERCASE_SNAKE_CASE_SENTENCE
+        --kebab,  -k   outputs-a-kebab-case-sentence
+        --Kebab,  -K   OUTPUTS-AN-UPPERCASE-KEBAB-CASE-SENTENCE
+
+    Any argument not matching the arguments above will be case-converted.
+
+    If your input may contain words starting with dashes that you
+    do not want interpreted as arguments, make sure to quote them:
+
+      "the -u in this sentece will be interpreted literally"
+
+    You can also pipe text into kz in order to convert it:
+
+      echo "a sentence to convert to camelCase" | kz -c
+
+    `)
 }
