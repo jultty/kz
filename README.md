@@ -53,8 +53,8 @@ The order of the options does _not_ matter. Anything not matching the arguments 
 If your input may contain words starting with dashes that you do not want interpreted as arguments, make sure to quote them:
 
 ```sh
-$ kz -u "the first -u in this line will be interpreted literally"
-THE FIRST -U IN THIS LINE WILL BE INTERPRETED LITERALLY
+$ kz -u "the second -u in this line will be interpreted literally"
+THE SECOND -U IN THIS LINE WILL BE INTERPRETED LITERALLY
 ```
 
 Note that if you pass multiple case style arguments, all corresponding conversions will be printed:
