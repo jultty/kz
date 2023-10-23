@@ -9,7 +9,7 @@ You can grab a pre-compiled binary from the [releases](https://github.com/jultty
 To build from source:
 
 ```sh
-go install https://github.com/jultty/kz@latest
+go install github.com/jultty/kz@latest
 ```
 
 This requires that you have Go [properly installed](https://go.dev/doc/install).
